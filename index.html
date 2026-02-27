@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSEN · Cat 4/5 Revision</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ssen-blue: #003087;
+    --ssen-mid: #0051a8;
+    --ssen-light: #0070cc;
+    --ssen-pale: #e8f0fb;
+    --white: #ffffff;
+    --off-white: #f4f6fa;
+    --text: #1a2540;
+    --muted: #6b7a9e;
+    --border: #d0d9ee;
+    --green: #1a8a4a;
+    --red: #c0392b;
+    --amber: #d4860a;
+    --green-bg: #e8f7ee;
+    --red-bg: #fdf0ef;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--ssen-blue);
+    padding: 0 1.5rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,48,135,0.3);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ssen-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    color: white;
+    background: rgba(255,255,255,0.15);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  .header-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+  }
+  .back-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: none;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── HOME ── */
+  .home-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+  }
+  .home-hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .home-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ssen-blue);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+  .home-title span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+  }
+
+  .mode-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .mode-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .mode-card:hover {
+    border-color: var(--ssen-mid);
+    box-shadow: 0 4px 20px rgba(0,48,135,0.12);
+    transform: translateY(-1px);
+  }
+  .mode-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .mode-icon.blue { background: var(--ssen-pale); }
+  .mode-icon.green { background: #e8f7ee; }
+  .mode-icon.amber { background: #fdf5e4; }
+
+  .mode-text {}
+  .mode-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ssen-blue);
+    letter-spacing: 0.02em;
+  }
+  .mode-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+  .mode-count {
+    margin-left: auto;
+    background: var(--ssen-pale);
+    color: var(--ssen-mid);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── QUIZ SCREEN ── */
+  .quiz-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .quiz-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--ssen-mid);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .score-chip {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ssen-blue);
+    background: var(--ssen-pale);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .q-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .q-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .q-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: var(--ssen-pale);
+    color: var(--ssen-mid);
+  }
+  .q-type-tag {
+    background: #fff3cd;
+    color: #856404;
+  }
+  .q-marks {
+    background: #f0f0f0;
+    color: var(--muted);
+  }
+  .q-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  /* MC options */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+  .option-btn {
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--ssen-mid);
+    background: var(--ssen-pale);
+  }
+  .option-btn.correct {
+    background: var(--green-bg);
+    border-color: var(--green);
+    color: var(--green);
+    font-weight: 600;
+  }
+  .option-btn.wrong {
+    background: var(--red-bg);
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* Text input */
+  .text-input-wrap {
+    margin-top: 1.25rem;
+  }
+  .text-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    resize: vertical;
+    min-height: 90px;
+    transition: border 0.15s;
+    background: var(--off-white);
+  }
+  .text-input:focus {
+    outline: none;
+    border-color: var(--ssen-mid);
+    background: white;
+  }
+
+  /* Sequence */
+  .sequence-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .seq-item {
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.92rem;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .seq-item:active { cursor: grabbing; }
+  .seq-item.dragging { opacity: 0.5; }
+  .seq-item.drag-over { border-color: var(--ssen-mid); background: var(--ssen-pale); }
+  .seq-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ssen-blue);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .seq-item.correct-pos { border-color: var(--green); background: var(--green-bg); }
+  .seq-item.wrong-pos { border-color: var(--red); background: var(--red-bg); }
+
+  /* TF */
+  .tf-options {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .tf-btn {
+    flex: 1;
+    padding: 0.85rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--off-white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+  .tf-btn:hover:not(:disabled) { border-color: var(--ssen-mid); background: var(--ssen-pale); }
+  .tf-btn.selected-true { border-color: var(--ssen-mid); background: var(--ssen-pale); color: var(--ssen-blue); }
+  .tf-btn.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+  .tf-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+
+  .justification-wrap {
+    margin-top: 0.75rem;
+  }
+  .justification-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Feedback */
+  .feedback-card {
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    margin-top: 0.75rem;
+    display: none;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feedback-card.correct {
+    background: var(--green-bg);
+    border: 1.5px solid var(--green);
+  }
+  .feedback-card.wrong {
+    background: var(--red-bg);
+    border: 1.5px solid var(--red);
+  }
+  .feedback-header {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  .feedback-card.correct .feedback-header { color: var(--green); }
+  .feedback-card.wrong .feedback-header { color: var(--red); }
+  .feedback-answer {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .feedback-source {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  /* Buttons */
+  .action-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .btn-primary {
+    background: var(--ssen-blue);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--ssen-mid); }
+  .btn-secondary {
+    background: white;
+    color: var(--ssen-blue);
+    border: 1.5px solid var(--border);
+    padding: 0.8rem 1.25rem;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--ssen-mid); }
+
+  /* Results */
+  .results-wrap {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+    text-align: center;
+  }
+  .results-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--ssen-blue);
+    line-height: 1;
+  }
+  .results-score span { font-size: 2rem; color: var(--muted); }
+  .results-label {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin: 0.5rem 0 1.5rem;
+  }
+  .results-grade {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+  }
+  .grade-pass { background: var(--green-bg); color: var(--green); }
+  .grade-close { background: #fff3cd; color: #856404; }
+  .grade-fail { background: var(--red-bg); color: var(--red); }
+  .results-breakdown {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: left;
+    margin-bottom: 1.25rem;
+  }
+  .breakdown-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+
+  /* ── PROMPT CARDS ── */
+  .cards-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 3rem;
+  }
+  .cards-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-flip-wrap {
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .card-flip {
+    position: relative;
+    width: 100%;
+    min-height: 220px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+  }
+  .card-flip.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    width: 100%;
+    min-height: 220px;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .card-front {
+    background: var(--ssen-blue);
+    color: white;
+  }
+  .card-back {
+    background: white;
+    border: 2px solid var(--ssen-blue);
+    transform: rotateY(180deg);
+    color: var(--text);
+  }
+  .card-q-num {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  .card-q-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .card-source {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: 1rem;
+  }
+  .card-tap-hint {
+    font-size: 0.78rem;
+    opacity: 0.6;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .card-answer-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ssen-blue);
+    margin-bottom: 0.5rem;
+  }
+  .card-answer-text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .card-marks {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.75rem;
+  }
+  .card-nav {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  .card-self-assess {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+    display: none;
+    animation: slideIn 0.2s ease;
+  }
+  .assess-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .assess-btns {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .assess-btn {
+    flex: 1;
+    padding: 0.65rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .assess-btn.got-it { color: var(--green); }
+  .assess-btn.got-it:hover { background: var(--green-bg); border-color: var(--green); }
+  .assess-btn.nearly { color: var(--amber); }
+  .assess-btn.nearly:hover { background: #fdf5e4; border-color: var(--amber); }
+  .assess-btn.missed { color: var(--red); }
+  .assess-btn.missed:hover { background: var(--red-bg); border-color: var(--red); }
+
+  /* filter bar for prompt cards */
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--muted);
+  }
+  .filter-btn.active {
+    background: var(--ssen-blue);
+    border-color: var(--ssen-blue);
+    color: white;
+  }
+
+  /* Mode selector on quiz screen */
+  .mode-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.35rem;
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 0.55rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .mode-tab.active {
+    background: var(--ssen-blue);
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    .home-title { font-size: 1.8rem; }
+    .q-text { font-size: 0.97rem; }
+    .results-score { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-brand">
+    <div class="ssen-logo">SSEN</div>
+    <div class="header-sub">Cat 4/5 Revision · New Forest Depot</div>
+  </div>
+  <button class="back-btn" id="backBtn" onclick="goHome()">← Home</button>
+</header>
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="home-wrap">
+    <div class="home-hero">
+      <div class="home-title">
+        LV Authorisation
+        <span>Revision Tool</span>
+      </div>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startMode('cat45')">
+        <div class="mode-icon blue">📝</div>
+        <div class="mode-text">
+          <div class="mode-name">Cat 4/5 Questions</div>
+          <div class="mode-desc">50 exam questions — type answer, multiple choice & sequencing</div>
+        </div>
+        <div class="mode-count">50 Q</div>
+      </div>
+      <div class="mode-card" onclick="startMode('supply')">
+        <div class="mode-icon green">🔌</div>
+        <div class="mode-text">
+          <div class="mode-name">Supply Point Test</div>
+          <div class="mode-desc">Polarity, ELI, voltage limits, continuity & insulation</div>
+        </div>
+        <div class="mode-count">10 Q</div>
+      </div>
+      <div class="mode-card" onclick="startMode('definitions')">
+        <div class="mode-icon" style="background:#f0e8fb;">📖</div>
+        <div class="mode-text">
+          <div class="mode-name" style="color:#5b2d8e;">Definitions</div>
+          <div class="mode-desc">Every OSR definition — written answer only, no hints</div>
+        </div>
+        <div class="mode-count" style="background:#f0e8fb;color:#5b2d8e;">24 Q</div>
+      </div>
+      <div class="mode-card" onclick="startMode('cards')">
+        <div class="mode-icon amber">&#x1F0CF;</div>
+        <div class="mode-text">
+          <div class="mode-name">Prompt Cards</div>
+          <div class="mode-desc">Tap to reveal the answer. Self-assess your knowledge</div>
+        </div>
+        <div class="mode-count">61 cards</div>
+      </div>
+      <div class="mode-card" id="wrongModeCard" onclick="startMode('wrong')" style="display:none; border-color:#c0392b; background:#fdf0ef;">
+        <div class="mode-icon" style="background:#fad7d3;">❌</div>
+        <div class="mode-text">
+          <div class="mode-name" style="color:#c0392b;">Wrong Answers</div>
+          <div class="mode-desc">Questions you got wrong this session — drill until you nail them</div>
+        </div>
+        <div class="mode-count" id="wrongModeCount" style="background:#fad7d3;color:#c0392b;">0 Q</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-wrap">
+    <div class="quiz-progress">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">1 / 50</div>
+      <div class="score-chip" id="scoreChip">Score: 0</div>
+    </div>
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-tag" id="qSource"></span>
+        <span class="q-tag q-type-tag" id="qType"></span>
+        <span class="q-tag q-marks" id="qMarks"></span>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div id="answerArea"></div>
+    </div>
+    <div class="feedback-card" id="feedbackCard">
+      <div class="feedback-header" id="feedbackHeader"></div>
+      <div class="feedback-answer" id="feedbackAnswer"></div>
+      <div class="feedback-source" id="feedbackSource"></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-secondary" id="submitBtn" onclick="submitAnswer()">Submit</button>
+      <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT CARDS SCREEN -->
+<div id="screen-cards" class="screen">
+  <div class="cards-wrap">
+    <div class="filter-bar">
+      <button class="filter-btn active" id="filter-all" onclick="setCardFilter('all')">All (61)</button>
+      <button class="filter-btn" id="filter-cat45" onclick="setCardFilter('cat45')">Cat 4/5 (50)</button>
+      <button class="filter-btn" id="filter-supply" onclick="setCardFilter('supply')">Supply Point (11)</button>
+    </div>
+    <div class="cards-progress">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="cardProgressFill"></div></div>
+      <div class="progress-label" id="cardProgressLabel">1 / 61</div>
+    </div>
+    <div class="card-flip-wrap" onclick="flipCard()">
+      <div class="card-flip" id="cardFlip">
+        <div class="card-face card-front">
+          <div class="card-q-num" id="cardQNum">Question 1</div>
+          <div class="card-q-text" id="cardQText"></div>
+          <div class="card-source" id="cardSource"></div>
+          <div class="card-tap-hint">Tap to reveal answer ↓</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-answer-label">Answer</div>
+          <div class="card-answer-text" id="cardAnswer"></div>
+          <div class="card-marks" id="cardMarks"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-self-assess" id="selfAssess">
+      <div class="assess-label">How did you do?</div>
+      <div class="assess-btns">
+        <button class="assess-btn got-it" onclick="assessCard('got')">✓ Got it</button>
+        <button class="assess-btn nearly" onclick="assessCard('nearly')">~ Nearly</button>
+        <button class="assess-btn missed" onclick="assessCard('missed')">✗ Missed it</button>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="btn-secondary" onclick="prevCard()" id="prevCardBtn">← Prev</button>
+      <button class="btn-primary" onclick="nextCard()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="screen-results" class="screen">
+  <div class="results-wrap">
+    <div class="results-score" id="resultsPct">0<span>%</span></div>
+    <div class="results-label" id="resultsRaw"></div>
+    <div class="results-grade" id="resultsGrade"></div>
+    <div class="results-breakdown">
+      <div class="breakdown-title">Breakdown</div>
+      <div class="breakdown-row"><span>Correct</span><span id="bCorrect">—</span></div>
+      <div class="breakdown-row"><span>Wrong</span><span id="bWrong">—</span></div>
+      <div class="breakdown-row"><span>Questions answered</span><span id="bTotal">—</span></div>
+    </div>
+    <div class="action-row" style="flex-direction:column">
+      <button class="btn-primary" onclick="restartSameMode()">Try Again</button>
+      <button class="btn-primary" id="drillWrongBtn" onclick="startMode('wrong')" style="display:none;background:#c0392b;">❌ Drill Wrong Answers (<span id="drillWrongCount">0</span>)</button>
+      <button class="btn-secondary" onclick="goHome()">Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+
+const CAT45_QUESTIONS = [
+  {
+    id:1, source:"EOP A20", marks:1,
+    q:"Under what circumstances must a PTW be used for work on an LV network?",
+    a:"A PTW is required when the work is in association with a HV shutdown, where the apparatus has been isolated and earthed.",
+    type:"text"
+  },
+  {
+    id:2, source:"PR-PS-328", marks:1,
+    q:"What document is issued to allow work on the LV side of a transformer where HV isolation and earthing have been applied?",
+    a:"A PTW (Permit to Work), provided working and access clearances are not infringed.",
+    mc:["PTW – Permit to Work","LOA – Limitation of Access","SFT – Sanction for Test","CN – Caution Notice"],
+    correct:0, type:"mc"
+  },
+  {
+    id:3, source:"PR-PS-328", marks:1,
+    q:"Where work is to be carried out on overhead lines on the LV side of a PMT, what determines whether a LOA or PTW is issued?",
+    a:"The working and access clearance. LOA if clearance is maintained, PTW if within or likely to infringe the working and access clearance.",
+    type:"text"
+  },
+  {
+    id:4, source:"OTG general", marks:1,
+    q:"When back feeding a LV underground network via a link box, why are fused links preferred over solid links?",
+    a:"Fused links allow discrimination between the back feeding circuit fuses and additional load, so a fault blows only part of the circuit rather than the whole network back to the transformer.",
+    mc:["To allow discrimination between back-feed fuses and additional load","Because solid links cannot carry the additional current","Fused links are cheaper and easier to install","To prevent back-feeding into the HV network"],
+    correct:0, type:"mc"
+  },
+  {
+    id:5, source:"OTG general", marks:4,
+    q:"List 4 considerations you should make when back feeding LV networks.",
+    a:"1. Transformer size / available TX capacity\n2. Circuit loads and cable capacity\n3. Load to be picked up\n4. Time of day, time of year, and weather",
+    type:"text"
+  },
+  {
+    id:6, source:"OTG general", marks:3,
+    q:"What is the correct operating sequence for providing multiple back feeds when isolating a GMT for maintenance whilst ensuring LV supplies are maintained?",
+    a:"1. Install first back feed, remove associated fuse\n2. Repeat for each proposed back feed\n3. Remove LV transformer links",
+    steps:["Remove LV transformer links","Install first back feed, remove associated fuse","Repeat for each proposed back feed"],
+    correctOrder:[1,2,0], type:"sequence"
+  },
+  {
+    id:7, source:"OSR D21(ii)", marks:1,
+    q:"What is the definition of an Authorised Person?",
+    a:"A Competent Person over the age of 18 appointed in writing by an electricity company to carry out specific duties, which may include authority to issue and cancel LOAs and/or receive SFTs.",
+    type:"text"
+  },
+  {
+    id:8, source:"OSR D21(iii)", marks:1,
+    q:"What is the definition of a Senior Authorised Person?",
+    a:"An Authorised Person appointed in writing by an electricity company to carry out specified duties, including the issue and cancellation of safety documents.",
+    mc:["An AP appointed in writing to issue and cancel safety documents","A Competent Person authorised to work on live HV apparatus","A person who has passed the Cat 4/5 exam and holds a safety card","Any experienced linesperson who can supervise trainees"],
+    correct:0, type:"mc"
+  },
+  {
+    id:9, source:"OSR D27(ii)", marks:2,
+    q:"Define Personal Supervision. How and who by?",
+    a:"Supervision by a person (having adequate technical knowledge, experience and competence) such that they are at all times during the course of the work or testing in the presence of the person being supervised, with the ability and competence to directly intervene.",
+    type:"text"
+  },
+  {
+    id:10, source:"OSR 8.2.1 & 8.2.2", marks:1,
+    q:"What precautions must be taken to enable work to be carried out on Dead LV Apparatus and Conductors?",
+    a:"The conductors must be Isolated and if possible Earthed. Caution Notices shall be posted at every point of isolation.",
+    type:"text"
+  },
+  {
+    id:11, source:"OSR 8.2.4", marks:1,
+    q:"If work is to be carried out on Dead LV Apparatus adjacent to Live Conductors, what precautions must be taken?",
+    a:"Suitable precautions shall be taken by Approved screening or other Approved means to avoid Danger from inadvertent contact with Live Conductors, including Danger Notices on apparatus containing Live Conductors and at the limits of the work zone.",
+    mc:["Approved screening and Danger Notices on live conductors at limits of work zone","Just keep a safe distance from the live conductors","Treat all conductors as live and use rubber gloves","Issue a PTW before any work commences"],
+    correct:0, type:"mc"
+  },
+  {
+    id:12, source:"OSR 8.2.5", marks:3,
+    q:"If work is to be carried out on Dead LV Apparatus that may become live due to a consumer's generator, what 3 precautions (one or more of which shall be taken) to prevent Danger?",
+    a:"(a) Conductors isolated from the consumer's System\n(b) Conductors Earthed, or an Earth provided between the point of work and the consumer's System\n(c) Conductors treated as Live",
+    type:"text"
+  },
+  {
+    id:13, source:"OSR 8.2.6", marks:1,
+    q:"If work is to be carried out on Dead LV Apparatus, what checks must be made at the point of work before work is commenced?",
+    a:"The Apparatus and Conductors shall be identified and proved dead at the point of work by means of an Approved voltage testing device.",
+    mc:["Identify apparatus and prove dead using an Approved voltage testing device","Check the caution notice is in place and proceed","Ask the SAP to confirm the network is isolated","Use a volt stick to confirm the conductors are not live"],
+    correct:0, type:"mc"
+  },
+  {
+    id:14, source:"OSR 8.2.6", marks:1,
+    q:"If work is to be carried out on Dead LV Apparatus that has not been isolated, how should this work be carried out?",
+    a:"Using live working methods that can reasonably be applied to minimise the risk of Danger from the conductors being accidentally or inadvertently made Live.",
+    mc:["Using live working methods with Approved tools and PPE","Stop work and call the depot immediately","Issue a Caution Notice and proceed as normal","Only work if an SAP is present on site"],
+    correct:0, type:"mc"
+  },
+  {
+    id:15, source:"OSR 8.3.1", marks:2,
+    q:"If work is to be carried out on a Dead LV underground cable, how shall the cable be identified in a) normal or b) damage situations?",
+    a:"Normal: Visually trace from a point where conductors are accessible and proved dead, OR open as if live and test each conductor.\nDamaged: Test at a safe distance from the suspected fault, then visually trace from the test point to the damage.",
+    type:"text"
+  },
+  {
+    id:16, source:"OSR 8.4.1", marks:1,
+    q:"How shall bare open-wire LV overhead Conductors be earthed?",
+    a:"Using Approved earthing leads (or Approved shorting stick).",
+    mc:["Using Approved earthing leads or Approved shorting stick","Any available copper wire connected to a ground stake","The vehicle chassis earthing system","Only by an SAP using specialist HV earthing equipment"],
+    correct:0, type:"mc"
+  },
+  {
+    id:17, source:"OSR 8.4.2", marks:1,
+    q:"Before working on Dead LV overhead Conductors, how must steelwork or the portion of any stay above the insulator be treated until it or the Conductors have been proved Dead?",
+    a:"Treat as Live.",
+    mc:["Treat as Live","Treat as earthed via the pole","Ignore it as it is not a conductor","Check the pole record card before deciding"],
+    correct:0, type:"mc"
+  },
+  {
+    id:18, source:"OSR 8.5.2", marks:1,
+    q:"Where Live LV work is to be carried out under an Approved procedure, who must assess the site conditions?",
+    a:"The Competent (or Authorised) Person in charge of the Working Party.",
+    mc:["The Competent/Authorised Person in charge of the Working Party","Any member of the working party","The Depot Operations Manager","The System Controller"],
+    correct:0, type:"mc"
+  },
+  {
+    id:19, source:"OSR 8.5.2", marks:4,
+    q:"Where Live LV work is to be carried out under an Approved procedure, what 4 requirements must be assessed regarding site conditions and apparatus?",
+    a:"(a) The apparatus to be worked on shall be visually inspected\n(b) There shall be adequate working space and a safe way out\n(c) There is adequate lighting\n(d) For outdoor work, weather conditions are not too adverse",
+    type:"text"
+  },
+  {
+    id:20, source:"OSR 8.5.2", marks:1,
+    q:"Where Live LV work is being carried out and site conditions become unfavourable, what must happen?",
+    a:"Live working must be suspended.",
+    mc:["Live working must be suspended","Continue if the CP judges it safe to do so","Notify the depot and carry on with caution","Issue a PTW and continue"],
+    correct:0, type:"mc"
+  },
+  {
+    id:21, source:"OSR 8.5.2", marks:2,
+    q:"Who can carry out Live LV work?",
+    a:"A Competent Person who has received appropriate training in the particular Live Work procedure, or someone under the Personal Supervision of an Authorised Person.",
+    type:"text"
+  },
+  {
+    id:22, source:"OSR 8.5.3", marks:1,
+    q:"What tools and equipment may be used for work on, or the testing of, Live LV Apparatus and Conductors?",
+    a:"Approved tools only.",
+    mc:["SSE Approved tools only","Any insulated tools rated to 1000V","Tools that have been individually tested by the operative","Standard trade tools with rubber grips"],
+    correct:0, type:"mc"
+  },
+  {
+    id:23, source:"OSR 8.5.4", marks:1,
+    q:"May a person carry out work which involves, or is equivalent to, the manipulation of bare live conductors, work alone?",
+    a:"No.",
+    tf:true, tfAnswer:false, justification:"The OSR prohibits working alone on bare live conductors due to the level of risk — a second person must always be present.", type:"tf"
+  },
+  {
+    id:24, source:"OSR 8.6.1", marks:3,
+    q:"What 3 precautions must be taken BEFORE working on Live LV Cables?",
+    a:"(a) Cable identified by Approved means\n(b) All adjacent metalwork adequately shrouded with Approved insulating material\n(c) Metallic sheaths bonded to each other with an Approved Conductor before jointing and before cutting",
+    type:"text"
+  },
+  {
+    id:25, source:"OSR 8.6.2", marks:2,
+    q:"Unless alternative Approved procedures allow (e.g. LVJI 581, 590), what precautions must be taken during all work on Live LV cables?",
+    a:"(a) Only one conductor shall be bared at a time\n(b) Approved insulating gloves shall be used",
+    mc:["One conductor bared at a time AND Approved insulating gloves","Full arc flash PPE and face shield","Any two conductors may be exposed if each is individually screened","Work can proceed normally if cable is identified and bonded"],
+    correct:0, type:"mc"
+  },
+  {
+    id:26, source:"OSR 8.7.2", marks:1,
+    q:"When work is carried out on Live LV overhead lines that are insulated, what precautions must be taken?",
+    a:"Approved insulated rubber gloves must be worn and Approved insulated tools used.",
+    type:"text"
+  },
+  {
+    id:27, source:"OSR 8.1.3", marks:1,
+    q:"What does the term 'Earthed' mean with regard to a LV System?",
+    a:"The bonding of the Phase Conductors (including any switch or earth wire) to the neutral Conductor by means of an Approved device or Approved leads.",
+    mc:["Bonding of Phase Conductors to the Neutral Conductor using Approved device/leads","Connecting the system to a ground spike at the pole base","Opening all fuses so the system is dead","Connecting phase to phase to short circuit the supply"],
+    correct:0, type:"mc"
+  },
+  {
+    id:28, source:"OSR 8.1.6", marks:2,
+    q:"If a new connection is provided or an existing service is altered, what 2 tests must be carried out prior to connecting either a single or 3 phase service?",
+    a:"1. Polarity check\n2. Phase rotation check (3 phase only)",
+    type:"text"
+  },
+  {
+    id:29, source:"OSR 8.1.7", marks:2,
+    q:"When a LV overhead line is to be erected or dismantled under a Live HV overhead line, with whose authority may this be done and what must they decide?",
+    a:"A SAP who must check the clearances and, if necessary, make the HV Line Dead and issue a PTW.",
+    type:"text"
+  },
+  {
+    id:30, source:"OSR 5.10.9(a)", marks:1,
+    q:"What must happen if you are working on an overhead line and a lightning storm approaches?",
+    a:"Work shall cease immediately and the System Controller is to be informed.",
+    mc:["Work ceases immediately and System Controller informed","Continue if within 30 minutes of completing the job","Stop work and wait in the vehicle until it passes","Call the depot and await further instructions"],
+    correct:0, type:"mc"
+  },
+  {
+    id:31, source:"OSR 4.4.1", marks:1,
+    q:"What is the Safety Distance that must be observed up to 11kV?",
+    a:"0.8 metres",
+    mc:["0.8m","0.5m","1.0m","1.5m"],
+    correct:0, type:"mc"
+  },
+  {
+    id:32, source:"OSR D15", marks:1,
+    q:"In the OSR, what is meant by 'Isolated'?",
+    a:"Disconnected from associated plant, apparatus and conductors by an isolating device in the isolating position, or by adequate physical separation or gap.",
+    type:"text"
+  },
+  {
+    id:33, source:"OSR 4.2.4", marks:1,
+    q:"What must be fitted at EVERY point of isolation?",
+    a:"A Caution Notice (CN).",
+    mc:["A Caution Notice","A padlock and Danger Notice","An SSE approved safety tag","A lock and caution notice combined tag"],
+    correct:0, type:"mc"
+  },
+  {
+    id:34, source:"OSR D21(i)", marks:1,
+    q:"What is the definition of a Competent Person?",
+    a:"A Person recognised by an Electricity Company as having sufficient knowledge and/or experience to enable them to avoid danger and who may be nominated to receive and clear specified Safety Documents.",
+    type:"text"
+  },
+  {
+    id:35, source:"OSR D27", marks:1,
+    q:"What is Immediate Supervision?",
+    a:"Supervision by an AP or CP who is continuously available at the work location and who can render advice/assistance as required.",
+    mc:["A CP/AP continuously available at the work location who can assist as required","One-to-one supervision with direct ability to intervene at all times","A supervisor who checks in at least every 30 minutes","Remote supervision via radio contact with the depot"],
+    correct:0, type:"mc"
+  },
+  {
+    id:36, source:"OSR D32", marks:1,
+    q:"What is meant by a 'Working Party' as defined in the Safety Rules?",
+    a:"Persons under the Immediate Supervision of a Competent or Authorised Person, or a Competent or Authorised Person working by themselves.",
+    type:"text"
+  },
+  {
+    id:37, source:"OSR 3.7", marks:1,
+    q:"During a power failure, how must the conductors and apparatus be treated if they have not been isolated and proved dead before the power failure?",
+    a:"The conductors and apparatus shall be treated as Live.",
+    tf:true, tfAnswer:true, justification:"During a power failure, unless apparatus has been proven dead before the outage, it must be treated as live — the outage may be temporary and supply could be restored at any time.", type:"tf"
+  },
+  {
+    id:38, source:"OSR 3.8", marks:1,
+    q:"What has to be carried out before and after each use of a voltage testing device?",
+    a:"The voltage testing device has to be tested (proved) before and after each use.",
+    mc:["The voltage testing device must be tested (proved) before AND after each use","Test before use only — after is not required","Visual inspection only before each use","Test it once at the start of the working day"],
+    correct:0, type:"mc"
+  },
+  {
+    id:39, source:"EOP A20", marks:2,
+    q:"Who is responsible for the safe operation of the LV Network in a Depot area?",
+    a:"The Depot Operations Manager.",
+    mc:["Depot Operations Manager","System Controller","Senior Authorised Person on shift","The Regional Network Director"],
+    correct:0, type:"mc"
+  },
+  {
+    id:40, source:"EOP A20", marks:1,
+    q:"Where is the boundary between LV and HV control?",
+    a:"The LV isolating mechanism of the distribution transformer — e.g. fuses, links, circuit breaker or switch.",
+    mc:["The LV isolating mechanism of the transformer (fuses, links, CB or switch)","The HV switch on the pole","The cutout at the customer's premises","The neutral link in the PMT"],
+    correct:0, type:"mc"
+  },
+  {
+    id:41, source:"EOP A20", marks:1,
+    q:"How is LV network switching controlled and recorded for planned work?",
+    a:"A current copy of the appropriate LV schematic diagram must be clearly marked to show the location and sequence of operations.",
+    type:"text"
+  },
+  {
+    id:42, source:"EOP A20", marks:1,
+    q:"How is LV underground network switching controlled and recorded for unplanned work?",
+    a:"A competent person relays information by phone from a current operational diagram, or staff obtain a copy of the LV schematic before switching — either paper copy or via laptop with GIS.",
+    type:"text"
+  },
+  {
+    id:43, source:"EOP A20", marks:1,
+    q:"Why is it important not to leave LV networks in parallel?",
+    a:"In the event of a HV fault, excess currents can flow in LV cables causing additional disruption and possible cable damage. If across a NOP, a HV fault on an adjacent circuit could be energised via the transformer.",
+    type:"text"
+  },
+  {
+    id:44, source:"PR-PS-328", marks:1,
+    q:"If it is necessary to provide isolation by opening the controlling HV switch to work on the LV fusegear of a pole mounted transformer or on the LV side of a ground mounted transformer, what safety document should be issued?",
+    a:"A LOA (Limitation of Access).",
+    mc:["LOA – Limitation of Access","PTW – Permit to Work","SFT – Sanction for Test","CN – Caution Notice only is sufficient"],
+    correct:0, type:"mc"
+  },
+  {
+    id:45, source:"OSR D27", marks:2,
+    q:"Can a trainee linesman with no authorisation work on live LV equipment at a pole top? If so, under what conditions?",
+    a:"Yes, provided they are under the Personal Supervision of an Authorised Person who maintains visual and verbal communication at all times.",
+    mc:["Yes — under Personal Supervision of an Authorised Person with visual & verbal communication","No — trainees must never work on live LV apparatus","Yes — under Immediate Supervision only, no specific communication required","Yes — if the trainee has completed at least 12 months service"],
+    correct:0, type:"mc"
+  },
+  {
+    id:46, source:"OSR D26", marks:1,
+    q:"If a point of isolation can be locked, what type of lock should you use?",
+    a:"A safety lock.",
+    mc:["A safety lock","Any padlock available on the vehicle","A Danger Notice tag instead of a lock","A combination lock with the code logged at depot"],
+    correct:0, type:"mc"
+  },
+  {
+    id:47, source:"OSR 8.2.6", marks:1,
+    q:"Can you use a 'volt stick' indicator to prove an item of plant dead?",
+    a:"No — a volt stick can only indicate that a conductor is live. It cannot be used to prove dead.",
+    tf:true, tfAnswer:false, justification:"A volt stick is a presence detector only. It can confirm a conductor IS live, but cannot definitively prove it is dead — only an Approved voltage testing device used in the correct sequence can prove dead.", type:"tf"
+  },
+  {
+    id:48, source:"OSR 8.5.2", marks:2,
+    q:"Can a SAP working alone, who only has experience of HV testing, work on live LV equipment and why?",
+    a:"No — firstly, you cannot work alone on live LV apparatus. Secondly, the SAP may not hold the relevant LV authorisation.",
+    type:"text"
+  },
+  {
+    id:49, source:"OSR 8.5.3", marks:2,
+    q:"Is there a difference between an insulated screwdriver from a DIY store and one obtained from SSE stores? If so, what?",
+    a:"Yes — SSE tools are tested and Approved to the relevant standard. A DIY store tool has no such assurance and is not Approved for use on live LV apparatus.",
+    mc:["Yes — SSE tools are tested and Approved; DIY tools are not","No difference — both are rated to 1000V","Yes — SSE tools have a different handle colour only","No — any IEC 60900 rated tool is acceptable"],
+    correct:0, type:"mc"
+  },
+  {
+    id:50, source:"EOP A20", marks:1,
+    q:"Is it satisfactory for LV network operations to be written on a network plan?",
+    a:"Yes.",
+    tf:true, tfAnswer:true, justification:"Recording operations directly on the network plan is an accepted method of controlling and recording LV switching operations.", type:"tf"
+  }
+];
+
+const SUPPLY_QUESTIONS = [
+  {
+    id:"R22", source:"Supply Point", marks:5,
+    q:"What are the 5 supply point tests we carry out and what does each confirm?",
+    a:"1. Confirm live and neutral are present (a circuit exists)\n2. Confirm polarity is correct\n3. Confirm voltage is within permitted limits\n4. Confirm Earth Loop Impedance is correct for the service type\n5. Confirm phase rotation is correct (3-phase customers only)",
+    type:"text"
+  },
+  {
+    id:"R23", source:"Supply Point", marks:2,
+    q:"What is the permitted voltage range for single phase LV at 230V?",
+    a:"−6% to +10% = 216V to 253V",
+    mc:["−6% to +10% (216V – 253V)","±10% (207V – 253V)","−10% to +6% (207V – 244V)","±5% (219V – 242V)"],
+    correct:0, type:"mc"
+  },
+  {
+    id:"R24", source:"Supply Point", marks:1,
+    q:"Why are Earth Loop Impedance (ELI) tests carried out?",
+    a:"To ensure the resistance of the circuit is low enough to allow sufficient current to flow in fault conditions so that fuses operate in a minimum time.",
+    mc:["To ensure fuses will operate quickly enough in fault conditions","To confirm the customer's installation is in good condition","To verify the cable size is correct for the load","To check there are no open circuit faults on the network"],
+    correct:0, type:"mc"
+  },
+  {
+    id:"R24B", source:"Supply Point", marks:3,
+    q:"What are the maximum ELI values at the cut out for: SNE 100A, CNE 100A, and 400A supplies?",
+    a:"SNE 100A: 0.8 ohms (old) / 0.25 ohms (new)\nCNE 100A: 0.35 ohms (old) / 0.25 ohms (new)\n400A supply: 0.15 ohms (old) / 0.13 ohms (new)",
+    type:"text"
+  },
+  {
+    id:"R25", source:"Supply Point", marks:2,
+    q:"What tests must be carried out on a new service cable, irrespective of size, prior to energising?",
+    a:"Insulation resistance test and continuity test.",
+    mc:["Insulation resistance AND continuity tests","Polarity test only","ELI test and voltage check","Visual inspection only is required"],
+    correct:0, type:"mc"
+  },
+  {
+    id:"R26", source:"Supply Point", marks:2,
+    q:"How are continuity and insulation tests carried out on a new service cable?",
+    a:"Continuity: Connect all cores together at the far end. Using a resistance tester at the near end, the reading between any 2 cores should be zero.\nInsulation: Disconnect all cores at the far end. Using a 1000V resistance meter at the near end, the reading should be infinite (>10MΩ for paper, >100MΩ for plastic insulated cables).",
+    type:"text"
+  },
+  {
+    id:"R27", source:"Supply Point", marks:4,
+    q:"When carrying out polarity checks, what two potential difference indicators are used and what does each confirm?",
+    a:"1. Voltmeter or test lamp — confirms a circuit is present (live and neutral exist)\n2. Neon indicator (polarity pen) — confirms which conductor is the live phase",
+    type:"text"
+  },
+  {
+    id:"R28", source:"Supply Point", marks:1,
+    q:"Which is the correct procedure for carrying out polarity checks at an existing cut out?",
+    a:"(e) Isolate consumer unit, remove fuse, remove neutral tail and carry out tests.",
+    mc:[
+      "a) Isolate CU, remove c/o fuse & carry out tests",
+      "b) Isolate CU, remove fuse, neutral AND phase tails and carry out tests",
+      "c) Confirm polarity with a volt stick",
+      "d) Isolate CU, remove fuse, neutral AND earth tails and carry out tests",
+      "e) Isolate CU, remove fuse, remove neutral tail and carry out tests"
+    ],
+    correct:4, type:"mc"
+  },
+  {
+    id:"R29", source:"Supply Point", marks:2,
+    q:"How should you deal with a crossed polarity situation found on an existing service?",
+    a:"Make safe using relevant PPE. Remove neutral tail (and earth on PME), remove fuse from carrier and replace empty carrier. Escalate to TM, take photographs if possible and retain seals.",
+    type:"text"
+  },
+  {
+    id:"R30", source:"Supply Point", marks:2,
+    q:"What is the reason for removing both the neutral AND earth tails in a PME cut out when carrying out polarity checks?",
+    a:"Due to the Faraday cage effect — if the earth tail is left in the live neutral block, all equipotentially bonded items (including water/gas pipes) remain live. Since these are also in contact with the ground you stand on, there is no potential difference between you and the neutral block, so the neon indicator gives a false (no light) reading. The neutral is also removed in case there is a neutral-earth fault on the customer's installation, which creates the same effect.",
+    type:"text"
+  },
+  {
+    id:"R31", source:"Supply Point", marks:1,
+    q:"List the colours of meter tail you may find on the system and what each colour represents.",
+    a:"Phase: Red, Brown, or Grey/Red\nNeutral: Black, Blue, or Grey/Neutral\nEarth: Green & Yellow",
+    type:"text"
+  }
+];
+
+const DEFINITIONS_QUESTIONS = [
+  { id:"D01", source:"OSR Section 2", marks:1, q:"Define: ISOLATED", a:"Disconnected from associated Plant, Apparatus and Conductors by an Isolating Device in the isolating position, or by adequate physical separation, or sufficient gap.", type:"text" },
+  { id:"D02", source:"OSR Section 2", marks:1, q:"Define: COMPETENT PERSON", a:"A Person recognised by SSEN-D as having sufficient technical knowledge and experience to enable them to avoid Danger and who may be nominated to receive and clear specified Safety Documents and shall be appointed in writing.", type:"text" },
+  { id:"D03", source:"OSR Section 2", marks:1, q:"Define: AUTHORISED PERSON", a:"An experienced Competent Person with appropriate technical knowledge and ability who has been appointed in writing by SSEN-D to carry out specified duties, which may include authority to issue and cancel Limitations-of-Access and/or to receive Sanctions-for-Test.", type:"text" },
+  { id:"D04", source:"OSR Section 2", marks:1, q:"Define: SENIOR AUTHORISED PERSON", a:"An Authorised Person who has been appointed in writing by SSEN-D to carry out specified duties, including the issue and cancellation of Safety Documents.", type:"text" },
+  { id:"D05", source:"OSR Section 2", marks:1, q:"Define: PERSONAL SUPERVISION", a:"Supervision by a Person (having adequate technical knowledge, experience and competence) such that they are at all times during the course of the work or testing continuously observing and in the presence of the person(s) being supervised, with the ability and competence to directly intervene.", type:"text" },
+  { id:"D06", source:"OSR Section 2", marks:1, q:"Define: IMMEDIATE SUPERVISION", a:"Supervision by a Person (having adequate technical knowledge, experience and competence) who is continuously available at the location where work or testing is in progress, and who attends the work area as is necessary for the safe performance of the work or testing.", type:"text" },
+  { id:"D07", source:"OSR Section 2", marks:1, q:"Define: WORKING PARTY", a:"Either the persons under the Supervision of a Competent or Authorised Person (who shall themselves be a member of the working party) or a Competent or Authorised Person when working alone.", type:"text" },
+  { id:"D08", source:"OSR Section 2", marks:1, q:"Define: DANGER", a:"A risk to health or of bodily injury.", type:"text" },
+  { id:"D09", source:"OSR Section 2", marks:1, q:"Define: APPARATUS", a:"Any item of electrical machinery or equipment in which Conductors are used, or supported, or of which they form part.", type:"text" },
+  { id:"D10", source:"OSR Section 2", marks:1, q:"Define: CONDUCTOR", a:"An electrical conductor arranged to be electrically connected to a System.", type:"text" },
+  { id:"D11", source:"OSR Section 2", marks:1, q:"Define: SYSTEM", a:"An electrical system in which Conductors and Apparatus are electrically connected to a common source of supply.", type:"text" },
+  { id:"D12", source:"OSR Section 2", marks:1, q:"Define: APPROVED", a:"Sanctioned by the Designated Engineer in order to satisfy, in a specified manner, the requirements of any or all of these OSR.", type:"text" },
+  { id:"D13", source:"OSR Section 2", marks:1, q:"Define: CAUTION NOTICE", a:"A notice in Approved form prohibiting unauthorised interference, with such additional Approved words as SSEN-D may determine.", type:"text" },
+  { id:"D14", source:"OSR Section 2", marks:1, q:"Define: SAFETY LOCK", a:"A lock used exclusively for Approved purposes (such as for locking-off the points at which the circuit can be energised) that lock being different from all other standard locks used on Systems.", type:"text" },
+  { id:"D15", source:"OSR Section 2", marks:1, q:"Define: SAFETY DISTANCE", a:"The distance from the nearest High Voltage exposed Conductor not Earthed, or from an insulator supporting a High Voltage Conductor, which must be maintained to avoid Danger.", type:"text" },
+  { id:"D16", source:"OSR Section 2", marks:1, q:"Define: SANCTION-FOR-TEST", a:"A Safety Document defined within an Approved procedure which specifies the High Voltage Apparatus which has been made safe for the testing described in the Safety Document to proceed and the conditions under which the testing is carried out.", type:"text" },
+  { id:"D17", source:"OSR Section 2", marks:1, q:"Define: WORKING AND ACCESS CLEARANCE", a:"The distance to be maintained from the nearest Live exposed High Voltage Conductor as specified in the OSR to ensure observance of the Safety Distance for work on or near Systems.", type:"text" },
+  { id:"D18", source:"OSR Section 2", marks:1, q:"Define: CIRCUIT MAIN EARTH", a:"Earthing equipment of Approved type applied before the issue of, and at a position recorded in, a Safety Document.", type:"text" },
+  { id:"D19", source:"OSR Section 2", marks:1, q:"What does SHALL mean in the OSR?", a:"A mandatory requirement with no discretion permitted and no judgement to be made.", type:"text" },
+  { id:"D20", source:"OSR 8.1.3", marks:1, q:"What does the term EARTHED mean in relation to a Low Voltage System?", a:"The bonding of the Phase Conductors (including any switch or earth wire) to the neutral Conductor by means of an Approved device or Approved leads.", type:"text" },
+  { id:"D21", source:"OSR LV Notes", marks:1, q:"Define: LOW VOLTAGE (LV)", a:"A voltage not exceeding 1000 Volts AC or 1500 Volts DC.", type:"text" },
+  { id:"D22", source:"OSR LV Notes", marks:1, q:"Define: HIGH VOLTAGE (HV)", a:"A voltage exceeding 1000 Volts AC or 1500 Volts DC.", type:"text" },
+  { id:"D23", source:"OSR Section 2", marks:1, q:"Define: ADDITIONAL EARTH", a:"Earthing equipment of Approved type which is applied after the issue of a Safety Document (for example an Earth applied at a point of work).", type:"text" },
+  { id:"D24", source:"OSR Section 2", marks:1, q:"Define: SWITCHING", a:"The operation of circuit-breakers, isolators, disconnectors, fuses or other methods of making or breaking an electrical circuit and/or the application and removal of Circuit Main Earths.", type:"text" }
+];
+
+// Build prompt cards from both datasets
+const PROMPT_CARDS = [];
+// Add cat45 questions as cards
+CAT45_QUESTIONS.forEach(q => {
+  PROMPT_CARDS.push({
+    id: q.id, source: q.source, marks: q.marks,
+    q: q.q, a: q.a, category: 'cat45'
+  });
+});
+// Add supply point as cards
+SUPPLY_QUESTIONS.forEach(q => {
+  PROMPT_CARDS.push({
+    id: q.id, source: q.source, marks: q.marks,
+    q: q.q, a: q.a, category: 'supply'
+  });
+});
+
+// ═══════════════════════════════════════════════════════
+//  TYPE RESOLVER — picks a random valid type per question
+// ═══════════════════════════════════════════════════════
+// Each question in the data has a base 'type' and optional mc/steps/tf data.
+// We assign an 'activeType' at question-load time by randomly picking from
+// all formats the question can support.
+function resolveType(q) {
+  // Definitions are always written answer
+  if (currentMode === 'definitions') return 'text';
+  // Wrong bank questions from definitions are also always text
+  if (q.id && String(q.id).startsWith('D')) return 'text';
+  const available = ['text'];
+  if (q.mc)    available.push('mc');
+  if (q.steps) available.push('sequence');
+  if (q.hasOwnProperty('tfAnswer')) available.push('tf');
+  return available[Math.floor(Math.random() * available.length)];
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let currentMode = '';
+let questions = [];
+let currentQIndex = 0;
+let score = 0;
+let answered = 0;
+let wrongAnswers = 0;
+let dragSrcIdx = null;
+let seqOrder = [];
+let tfSelected = null;
+let justificationGiven = false;
+let activeType = 'text'; // resolved each question
+
+// Wrong answer bank — persists across sessions in this page load
+let wrongBank = []; // array of question objects
+function addToWrongBank(q) {
+  if (!wrongBank.find(x => x.id === q.id && x.source === q.source)) {
+    wrongBank.push(q);
+  }
+  updateWrongCard();
+}
+function removeFromWrongBank(q) {
+  wrongBank = wrongBank.filter(x => !(x.id === q.id && x.source === q.source));
+  updateWrongCard();
+}
+function updateWrongCard() {
+  const card = document.getElementById('wrongModeCard');
+  const count = document.getElementById('wrongModeCount');
+  if (!card || !count) return;
+  card.style.display = wrongBank.length > 0 ? 'flex' : 'none';
+  count.textContent = wrongBank.length + ' Q';
+}
+
+// Card state
+let cardIndex = 0;
+let cardFilter = 'all';
+let filteredCards = [...PROMPT_CARDS];
+let cardFlipped = false;
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('backBtn').style.display = id === 'home' ? 'none' : 'block';
+}
+
+function goHome() { showScreen('home'); }
+
+function startMode(mode) {
+  currentMode = mode;
+  if (mode === 'cards') {
+    cardIndex = 0;
+    cardFilter = 'all';
+    filteredCards = [...PROMPT_CARDS];
+    document.getElementById('filter-all').classList.add('active');
+    document.getElementById('filter-cat45').classList.remove('active');
+    document.getElementById('filter-supply').classList.remove('active');
+    renderCard();
+    showScreen('cards');
+    return;
+  }
+  // Quiz modes
+  if (mode === 'cat45') questions = shuffle([...CAT45_QUESTIONS]);
+  else if (mode === 'supply') questions = shuffle([...SUPPLY_QUESTIONS]);
+  else if (mode === 'definitions') questions = shuffle([...DEFINITIONS_QUESTIONS]);
+  else if (mode === 'wrong') {
+    if (wrongBank.length === 0) return;
+    questions = shuffle([...wrongBank]);
+  }
+  currentQIndex = 0;
+  score = 0;
+  answered = 0;
+  wrongAnswers = 0;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════════════════
+function renderQuestion() {
+  const q = questions[currentQIndex];
+  const total = questions.length;
+
+  // Resolve question type randomly each time
+  activeType = resolveType(q);
+
+  // Progress
+  const pct = Math.round((currentQIndex / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = (currentQIndex + 1) + ' / ' + total;
+  document.getElementById('scoreChip').textContent = 'Score: ' + score + '/' + answered;
+
+  // Question meta
+  document.getElementById('qSource').textContent = q.source;
+  document.getElementById('qMarks').textContent = q.marks + ' mark' + (q.marks > 1 ? 's' : '');
+
+  const typeLabels = { text: 'Written Answer', mc: 'Multiple Choice', sequence: 'Sequence Ordering', tf: 'True / False' };
+  document.getElementById('qType').textContent = typeLabels[activeType] || activeType;
+  document.getElementById('qText').textContent = q.q;
+
+  // Clear feedback
+  const fb = document.getElementById('feedbackCard');
+  fb.style.display = 'none';
+  fb.className = 'feedback-card';
+
+  // Rebuild action row cleanly each question
+  const actionRow = document.querySelector('.action-row');
+  actionRow.innerHTML = `
+    <button class="btn-secondary" onclick="submitAnswer()">Submit</button>`;
+
+  tfSelected = null;
+  justificationGiven = false;
+  selectedMCBtn = null;
+
+  // Render answer area
+  const area = document.getElementById('answerArea');
+  area.innerHTML = '';
+
+  if (activeType === 'text') {
+    area.innerHTML = `
+      <div class="text-input-wrap">
+        <textarea class="text-input" id="textAnswer" placeholder="Type your answer here..." rows="4"></textarea>
+      </div>`;
+  } else if (activeType === 'mc') {
+    const opts = shuffleMC(q.mc, q.correct);
+    area.innerHTML = `<div class="options-list">` +
+      opts.map((o, i) => `<button class="option-btn" data-correct="${o.isCorrect}" onclick="selectMC(this)">${o.text}</button>`).join('') +
+      `</div>`;
+  } else if (activeType === 'sequence') {
+    seqOrder = [...Array(q.steps.length).keys()];
+    shuffle(seqOrder);
+    renderSeq(q);
+  } else if (activeType === 'tf') {
+    area.innerHTML = `
+      <div class="tf-options">
+        <button class="tf-btn" id="tf-true" onclick="selectTF(true, this)">TRUE</button>
+        <button class="tf-btn" id="tf-false" onclick="selectTF(false, this)">FALSE</button>
+      </div>
+      <div class="justification-wrap" style="margin-top:0.75rem">
+        <div class="justification-label">Why? (briefly explain your reasoning)</div>
+        <textarea class="text-input" id="tfJustification" placeholder="Explain why..." rows="3" style="min-height:70px"></textarea>
+      </div>`;
+  }
+}
+
+function shuffleMC(options, correctIdx) {
+  const correctText = options[correctIdx];
+  const shuffled = options.map((t, i) => ({ text: t, isCorrect: i === correctIdx }));
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+let selectedMCBtn = null;
+let mcIsCorrect = false;
+
+function selectMC(btn) {
+  if (selectedMCBtn) selectedMCBtn.classList.remove('selected');
+  selectedMCBtn = btn;
+  btn.classList.add('selected');
+  btn.style.borderColor = 'var(--ssen-mid)';
+  btn.style.background = 'var(--ssen-pale)';
+}
+
+function selectTF(val, btn) {
+  document.querySelectorAll('.tf-btn').forEach(b => {
+    b.classList.remove('selected-true');
+    b.style.borderColor = '';
+    b.style.background = '';
+  });
+  tfSelected = val;
+  btn.classList.add('selected-true');
+}
+
+let seqSelectedIdx = null;
+
+function renderSeq(q) {
+  const area = document.getElementById('answerArea');
+  area.innerHTML = `<div class="sequence-list" id="seqList">` +
+    seqOrder.map((stepIdx, pos) =>
+      `<div class="seq-item" data-pos="${pos}" onclick="tapSeq(${pos})">
+        <div class="seq-num">${pos + 1}</div>
+        <div>${q.steps[stepIdx]}</div>
+      </div>`
+    ).join('') +
+    `</div>
+    <p style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem">Tap a step to select it, then tap another to swap — arrange into the correct order.</p>`;
+}
+
+function tapSeq(pos) {
+  if (seqSelectedIdx === null) {
+    seqSelectedIdx = pos;
+    document.querySelectorAll('.seq-item')[pos].classList.add('selected-seq');
+  } else {
+    if (seqSelectedIdx !== pos) {
+      const tmp = seqOrder[seqSelectedIdx];
+      seqOrder[seqSelectedIdx] = seqOrder[pos];
+      seqOrder[pos] = tmp;
+    }
+    seqSelectedIdx = null;
+    renderSeq(questions[currentQIndex]);
+  }
+}
+
+function submitAnswer() {
+  const q = questions[currentQIndex];
+  answered++;
+  let correct = false;
+
+  const fb = document.getElementById('feedbackCard');
+  const fbHeader = document.getElementById('feedbackHeader');
+  const fbAnswer = document.getElementById('feedbackAnswer');
+  const fbSource = document.getElementById('feedbackSource');
+
+  if (activeType === 'text') {
+    fb.className = 'feedback-card';
+    fbHeader.textContent = '📖 Model Answer';
+    fbAnswer.textContent = q.a;
+    fbSource.textContent = 'Source: ' + q.source;
+    fb.style.display = 'block';
+    const ta = document.getElementById('answerArea').querySelector('textarea');
+    if (ta) ta.disabled = true;
+    const actionRow = document.querySelector('.action-row');
+    actionRow.innerHTML = `
+      <button class="btn-secondary" style="color:var(--green);border-color:var(--green)" onclick="selfScore(true)">✓ I got it</button>
+      <button class="btn-secondary" style="color:var(--red);border-color:var(--red)" onclick="selfScore(false)">✗ I missed it</button>`;
+    return;
+  }
+
+  if (activeType === 'mc') {
+    if (!selectedMCBtn) { alert('Please select an answer.'); answered--; return; }
+    correct = selectedMCBtn.dataset.correct === 'true';
+    document.querySelectorAll('.option-btn').forEach(btn => {
+      btn.disabled = true;
+      btn.style.borderColor = '';
+      btn.style.background = '';
+      if (btn.dataset.correct === 'true') btn.classList.add('correct');
+      else if (btn === selectedMCBtn && !correct) btn.classList.add('wrong');
+    });
+    selectedMCBtn = null;
+  } else if (activeType === 'sequence') {
+    correct = q.correctOrder.every((v, i) => seqOrder[i] === v);
+    document.querySelectorAll('.seq-item').forEach((el, i) => {
+      if (seqOrder[i] === q.correctOrder[i]) el.classList.add('correct-pos');
+      else el.classList.add('wrong-pos');
+    });
+  } else if (activeType === 'tf') {
+    if (tfSelected === null) { alert('Please select True or False.'); answered--; return; }
+    correct = (tfSelected === q.tfAnswer);
+    const trueBtn = document.getElementById('tf-true');
+    const falseBtn = document.getElementById('tf-false');
+    trueBtn.disabled = true;
+    falseBtn.disabled = true;
+    if (q.tfAnswer === true) trueBtn.classList.add('correct');
+    else falseBtn.classList.add('correct');
+    if (!correct) {
+      if (tfSelected === true) trueBtn.classList.add('wrong');
+      else falseBtn.classList.add('wrong');
+    }
+    const justInput = document.getElementById('tfJustification');
+    if (justInput) justInput.disabled = true;
+  }
+
+  if (correct) score++;
+  else wrongAnswers++;
+
+  // Wrong bank tracking — track from all modes except 'wrong' itself
+  if (currentMode !== 'wrong') {
+    if (!correct) addToWrongBank(q);
+    else removeFromWrongBank(q);
+  }
+
+  document.getElementById('scoreChip').textContent = 'Score: ' + score + '/' + answered;
+
+  fb.className = 'feedback-card ' + (correct ? 'correct' : 'wrong');
+  fbHeader.textContent = correct ? '✓ Correct!' : '✗ Incorrect';
+  let answerText = q.a;
+  if (activeType === 'tf') answerText = (q.tfAnswer ? 'TRUE' : 'FALSE') + '\n\n' + q.justification;
+  fbAnswer.textContent = answerText;
+  fbSource.textContent = 'Source: ' + q.source;
+  fb.style.display = 'block';
+
+  const actionRow = document.querySelector('.action-row');
+  actionRow.innerHTML = `<button class="btn-primary" onclick="nextQuestion()">Next →</button>`;
+}
+
+function selfScore(gotIt) {
+  const q = questions[currentQIndex];
+  if (gotIt) {
+    score++;
+    if (currentMode !== 'wrong') removeFromWrongBank(q);
+  } else {
+    wrongAnswers++;
+    if (currentMode !== 'wrong') addToWrongBank(q);
+  }
+  document.getElementById('scoreChip').textContent = 'Score: ' + score + '/' + answered;
+  const fbCard = document.getElementById('feedbackCard');
+  if (gotIt) {
+    fbCard.className = 'feedback-card correct';
+    document.getElementById('feedbackHeader').textContent = '✓ Marked correct';
+  } else {
+    fbCard.className = 'feedback-card wrong';
+    document.getElementById('feedbackHeader').textContent = '✗ Marked incorrect';
+  }
+  const actionRow = document.querySelector('.action-row');
+  actionRow.innerHTML = `
+    <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>`;
+}
+
+function nextQuestion() {
+  currentQIndex++;
+  if (currentQIndex >= questions.length) {
+    showResults();
+    return;
+  }
+  selectedMCBtn = null;
+  renderQuestion();
+}
+
+function showResults() {
+  showScreen('results');
+  const pct = Math.round((score / answered) * 100);
+  document.getElementById('resultsPct').innerHTML = pct + '<span>%</span>';
+  document.getElementById('resultsRaw').textContent = score + ' correct out of ' + answered + ' questions';
+  document.getElementById('bCorrect').textContent = score;
+  document.getElementById('bWrong').textContent = wrongAnswers;
+  document.getElementById('bTotal').textContent = answered;
+
+  const gradeEl = document.getElementById('resultsGrade');
+  if (pct >= 90) { gradeEl.textContent = 'PASS'; gradeEl.className = 'results-grade grade-pass'; }
+  else if (pct >= 75) { gradeEl.textContent = 'VERBAL ASSESSMENT'; gradeEl.className = 'results-grade grade-close'; }
+  else { gradeEl.textContent = 'REVISE & RETRY'; gradeEl.className = 'results-grade grade-fail'; }
+
+  // Show drill wrong button if there are wrong answers banked
+  const drillBtn = document.getElementById('drillWrongBtn');
+  const drillCount = document.getElementById('drillWrongCount');
+  if (wrongBank.length > 0) {
+    drillBtn.style.display = 'block';
+    drillCount.textContent = wrongBank.length;
+  } else {
+    drillBtn.style.display = 'none';
+  }
+}
+
+function restartSameMode() { startMode(currentMode); }
+
+// ═══════════════════════════════════════════════════════
+//  PROMPT CARDS
+// ═══════════════════════════════════════════════════════
+function setCardFilter(filter) {
+  cardFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filter-' + filter).classList.add('active');
+  if (filter === 'all') filteredCards = [...PROMPT_CARDS];
+  else filteredCards = PROMPT_CARDS.filter(c => c.category === filter);
+  cardIndex = 0;
+  renderCard();
+}
+
+function renderCard() {
+  const card = filteredCards[cardIndex];
+  const total = filteredCards.length;
+
+  document.getElementById('cardProgressFill').style.width = Math.round(((cardIndex + 1) / total) * 100) + '%';
+  document.getElementById('cardProgressLabel').textContent = (cardIndex + 1) + ' / ' + total;
+
+  document.getElementById('cardQNum').textContent = 'Question ' + card.id;
+  document.getElementById('cardQText').textContent = card.q;
+  document.getElementById('cardSource').textContent = card.source;
+  document.getElementById('cardAnswer').textContent = card.a;
+  document.getElementById('cardMarks').textContent = card.marks + ' mark' + (card.marks > 1 ? 's' : '');
+
+  // Reset flip
+  const flip = document.getElementById('cardFlip');
+  flip.classList.remove('flipped');
+  cardFlipped = false;
+  document.getElementById('selfAssess').style.display = 'none';
+  document.getElementById('prevCardBtn').style.opacity = cardIndex === 0 ? '0.4' : '1';
+}
+
+function flipCard() {
+  const flip = document.getElementById('cardFlip');
+  cardFlipped = !cardFlipped;
+  flip.classList.toggle('flipped', cardFlipped);
+  if (cardFlipped) {
+    setTimeout(() => {
+      document.getElementById('selfAssess').style.display = 'block';
+    }, 250);
+  } else {
+    document.getElementById('selfAssess').style.display = 'none';
+  }
+}
+
+function assessCard(result) {
+  // Just move to next card after self-assessment
+  document.getElementById('selfAssess').style.display = 'none';
+  if (cardIndex < filteredCards.length - 1) {
+    cardIndex++;
+    renderCard();
+  }
+}
+
+function nextCard() {
+  if (cardIndex < filteredCards.length - 1) {
+    cardIndex++;
+    renderCard();
+  }
+}
+
+function prevCard() {
+  if (cardIndex > 0) {
+    cardIndex--;
+    renderCard();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', goHome);
+</script>
+</body>
+</html>
